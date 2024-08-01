@@ -91,7 +91,7 @@ const rankCheck = score => {
   return `${score}文字打てました!\n${text}\n【OK】リトライ / 【キャンセル】終了`;
 };
 
-// ゲームを終了　kadai_002では以下の(0)(1)(2)を変更した
+// ゲームを終了　kadai_002では以下の(0)(1)(2)を変更した。OKボタンでリロードされなかったため再提出となり、(3)をsetTimeout内へ移動して対応した。
 const gameOver = id => {
 
   // (0)　コメント追加：setIntervalをclearする。つまり、カウントダウンを停止→'0'の状態でストップする
@@ -100,16 +100,16 @@ const gameOver = id => {
   // (1) 修正：結果表示を（２）ののち10ms後へ遅らせるため、confirmを非同期にする
   setTimeout(() => {
     const result = confirm(rankCheck(score));
+      // OKボタンをクリックされたらリロードする
+    if(result == true) {
+      window.location.reload();
+    }
   }, 10);
 
   // (2) 追加　結果を表示
   typedfield.textContent = '';
   untypedfield.textContent = 'タイムアップ';  
 
-  // OKボタンをクリックされたらリロードする
-  if(result == true) {
-    window.location.reload();
-  }
 };
 
 // カウントダウンタイマー
